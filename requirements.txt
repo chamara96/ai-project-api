@@ -1,0 +1,8 @@
+Django==4.0.6
+python-dotenv>=0.21.0,<0.22
+tensorflow==2.9.0
+keras==2.9.0
+mtcnn==0.1.1
+djangorestframework==3.14.0
+drf-yasg==1.21.4
+Pillow==9.0.0
