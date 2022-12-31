@@ -3,6 +3,7 @@
 *.pyc
 db.sqlite3
 venv/
+static/
 .env
 __pycache__.*
 .pytest_cache/
