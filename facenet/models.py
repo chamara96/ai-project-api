@@ -13,4 +13,4 @@ class FaceVector(models.Model):
     @property
     def get_vector(self):
         vec = [float(v) for v in self.vector.split(",")]
-        return np.asarray(vec, dtype=float).reshape(1, -1)
+        return np.asarray(vec, dtype=np.float32).reshape(1, -1)

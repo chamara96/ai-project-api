@@ -41,6 +41,7 @@ class Face:
     def __init__(self, img, confidence, x1, y1, x2, y2, keypoints) -> None:
         self._img = img
         self._name = None
+        self._distance = None
         self._confidence = confidence
         self._point_1 = Point(x1, y1)
         self._point_2 = Point(x2, y2)
@@ -51,6 +52,7 @@ class Face:
         return {
             "name": self._name,
             "confidence": self._confidence,
+            "distance": self._distance,
             "box": {
                 "start": self._point_1.json(),
                 "end": self._point_2.json(),
@@ -84,6 +86,14 @@ class Face:
     @name.setter
     def name(self, new_name):
         self._name = new_name
+
+    @property
+    def distance(self):
+        return self._distance
+
+    @distance.setter
+    def distance(self, new_distance):
+        self._distance = new_distance
 
     def __str__(self) -> str:
         return f"Face({self._point_1}, {self._point_2})"
