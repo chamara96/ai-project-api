@@ -4,22 +4,26 @@ import numpy as np
 import math
 from .point import Face, Point
 
+ROTATE_CLOCKWISE = -1
+ROTATE_COUNTER_CLOCKWISE = 1
+NO_ROTATION = 0
+
 detector = mtcnn.MTCNN()
 
 
 def face_alignment(face: Face, original_img):
     if face.left_eye.y == face.right_eye.y:
-        rotation_direction = 0
+        rotation_direction = NO_ROTATION
     elif face.left_eye.y > face.right_eye.y:
         point_c = Point(face.right_eye.x, face.left_eye.y)
-        rotation_direction = -1
+        rotation_direction = ROTATE_CLOCKWISE
     else:
         point_c = Point(face.left_eye.x, face.right_eye.y)
-        rotation_direction = 1
+        rotation_direction = ROTATE_COUNTER_CLOCKWISE
 
     face_img = face.img
 
-    if rotation_direction != 0:
+    if rotation_direction != NO_ROTATION:
         edge_a = face.left_eye - point_c
         edge_b = face.right_eye - point_c
         edge_c = face.left_eye - face.right_eye
@@ -29,7 +33,7 @@ def face_alignment(face: Face, original_img):
             angle = np.arccos(cos_a)  # angle in radian
             angle = (angle * 180) / math.pi  # radian to degree
 
-            if rotation_direction == -1:
+            if rotation_direction == ROTATE_CLOCKWISE:
                 angle = 90 - angle
 
             face_center = face.box_center
