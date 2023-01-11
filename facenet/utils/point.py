@@ -43,8 +43,8 @@ class Face:
         self._name = None
         self._distance = None
         self._confidence = confidence
-        self._point_1 = Point(x1, y1)
-        self._point_2 = Point(x2, y2)
+        self._box_start = Point(x1, y1)
+        self._box_end = Point(x2, y2)
         self._left_eye = Eye(*keypoints.get("left_eye"))
         self._right_eye = Eye(*keypoints.get("right_eye"))
 
@@ -54,8 +54,8 @@ class Face:
             "confidence": self._confidence,
             "distance": self._distance,
             "box": {
-                "start": self._point_1.json(),
-                "end": self._point_2.json(),
+                "start": self._box_start.json(),
+                "end": self._box_end.json(),
             },
             "keypoints": {
                 "left_eye": self._left_eye.json(),
@@ -70,6 +70,20 @@ class Face:
     @property
     def right_eye(self):
         return self._right_eye
+
+    @property
+    def box_start(self):
+        return self._box_start
+
+    @property
+    def box_end(self):
+        return self._box_end
+
+    @property
+    def box_center(self):
+        _x = round((self._box_start.x + self._box_end.x)/2)
+        _y = round((self._box_start.y + self._box_end.y)/2)
+        return Point(_x, _y)
 
     @property
     def img(self):
@@ -96,4 +110,4 @@ class Face:
         self._distance = new_distance
 
     def __str__(self) -> str:
-        return f"Face({self._point_1}, {self._point_2})"
+        return f"Face({self._box_start}, {self._box_end})"

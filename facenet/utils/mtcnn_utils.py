@@ -7,7 +7,7 @@ from .point import Face, Point
 detector = mtcnn.MTCNN()
 
 
-def face_alignment(face: Face):
+def face_alignment(face: Face, original_img):
     if face.left_eye.y == face.right_eye.y:
         rotation_direction = 0
     elif face.left_eye.y > face.right_eye.y:
@@ -32,8 +32,19 @@ def face_alignment(face: Face):
             if rotation_direction == -1:
                 angle = 90 - angle
 
-            face_img = Image.fromarray(face_img)
-            face_img = np.array(face_img.rotate(rotation_direction * angle))
+            face_center = face.box_center
+            whole_img = Image.fromarray(original_img)
+            rotated_img = np.array(
+                whole_img.rotate(
+                    angle=rotation_direction * angle,
+                    center=(face_center.x, face_center.y)
+                )
+            )
+            x1 = face.box_start.x
+            y1 = face.box_start.y
+            x2 = face.box_end.x
+            y2 = face.box_end.y
+            face_img = rotated_img[y1:y2, x1:x2]
 
     image = Image.fromarray(face_img)
     required_size = (160, 160)
@@ -60,7 +71,7 @@ def face_detector(image_mem_obj):
             face_img = img_array[y1:y2, x1:x2]
             face = Face(face_img, confidence, x1, y1, x2, y2, keypoints)
 
-            face_alignment(face)
+            face_alignment(face, img_array)
 
             faces_list.append(face)
 
