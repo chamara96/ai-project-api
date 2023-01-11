@@ -29,7 +29,7 @@ def face_alignment(face: Face, original_img):
         edge_c = face.left_eye - face.right_eye
 
         if edge_b and edge_c:
-            cos_a = (edge_b*edge_b + edge_c*edge_c - edge_a*edge_a)/(2*edge_b*edge_c)
+            cos_a = edge_b / edge_c
             angle = np.arccos(cos_a)  # angle in radian
             angle = (angle * 180) / math.pi  # radian to degree
 
